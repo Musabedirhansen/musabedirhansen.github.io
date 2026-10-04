@@ -1,0 +1,1309 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Musa Bedirhan Şen · Makine Mühendisi</title>
+<meta name="description" content="Musa Bedirhan Şen: makine mühendisi. Yapısal ve akış analizi, savunma, tarım makineleri ve ağır vasıta projeleri.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Musa Bedirhan Şen · Makine Mühendisi">
+<meta property="og:description" content="Yapısal ve akış analizi projeleri, 3D modeller ve iş deneyimi.">
+<meta property="og:url" content="https://senyoriplikci.github.io/musabedirhansen/">
+<meta property="og:image" content="https://senyoriplikci.github.io/musabedirhansen/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://senyoriplikci.github.io/musabedirhansen/">
+</head>
+<body>
+<title>Musa Bedirhan Şen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a post-processor viewport — live simulation hero, then quiet "solver log" sections on deep slate. Single committed dark look. */
+:root {
+  --bg: #0C131C;
+  --bg-2: #101A26;
+  --panel: #142130;
+  --line: #22334A;
+  --fg: #E6EDF4;
+  --muted: #93A5BA;
+  --dim: #5F7389;
+  --accent: #FFB547;
+  --screen: #E9EEF3;
+  --f-display: "Archivo", "Arial Narrow", Arial, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", Arial, sans-serif;
+  --f-mono: "JetBrains Mono", Consolas, "Courier New", monospace;
+  --jet: linear-gradient(90deg, #0000FF 0 11.1%, #0060FF 11.1% 22.2%, #00BFFF 22.2% 33.3%, #00FFC0 33.3% 44.4%, #40FF40 44.4% 55.5%, #C0FF00 55.5% 66.6%, #FFD000 66.6% 77.7%, #FF7000 77.7% 88.8%, #FF0000 88.8% 100%);
+  --jet-v: linear-gradient(0deg, #0000FF 0 11.1%, #0060FF 11.1% 22.2%, #00BFFF 22.2% 33.3%, #00FFC0 33.3% 44.4%, #40FF40 44.4% 55.5%, #C0FF00 55.5% 66.6%, #FFD000 66.6% 77.7%, #FF7000 77.7% 88.8%, #FF0000 88.8% 100%);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+img { max-width: 100%; display: block; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.wrap { width: 100%; max-width: 1240px; margin-inline: auto; padding-inline: clamp(16px, 4vw, 40px); }
+.mono { font-family: var(--f-mono); font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+/* ---------- top bar ---------- */
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 82%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 56px; }
+.brand { font-family: var(--f-display); font-stretch: 125%; font-weight: 800; letter-spacing: .02em; text-decoration: none; font-size: 15px; }
+.brand span { display: inline-block; width: 18px; height: 6px; margin-right: 10px; vertical-align: middle; background: var(--jet); border-radius: 1px; }
+.nav { display: flex; gap: clamp(12px, 2.4vw, 28px); }
+.nav a { font-family: var(--f-mono); font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); text-decoration: none; }
+.nav a:hover { color: var(--fg); }
+
+/* ---------- hero / viewport ---------- */
+.hero { position: relative; height: clamp(560px, 80vh, 800px); overflow: hidden; border-bottom: 1px solid var(--line);
+  background: radial-gradient(120% 90% at 70% 40%, #17283C 0%, var(--bg) 62%); }
+#sim { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: grab; touch-action: pan-y; }
+#sim:active { cursor: grabbing; }
+.hero-fallback { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: .5; }
+.grid-bg { position: absolute; inset: 0; pointer-events: none;
+  background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 64px 64px; opacity: .22; mask-image: radial-gradient(80% 70% at 60% 45%, #000 20%, transparent 85%); }
+.hero-ui { position: absolute; inset: 0; pointer-events: none; }
+.hero-ui .wrap { position: relative; height: 100%; }
+.hero-copy { position: absolute; left: clamp(16px, 4vw, 40px); bottom: clamp(28px, 6vh, 64px); max-width: 640px; pointer-events: auto; }
+.hero-copy .mono { color: var(--accent); }
+h1 { font-family: var(--f-display); font-stretch: 125%; font-weight: 850; font-size: clamp(40px, 7.2vw, 104px); line-height: .92; letter-spacing: -.01em; margin: 14px 0 18px; text-wrap: balance; }
+.hero-copy p { margin: 0; font-size: clamp(16px, 1.6vw, 20px); color: var(--muted); max-width: 46ch; }
+.legend { position: absolute; top: 28px; left: clamp(16px, 4vw, 40px); display: grid; grid-template-columns: 14px auto; gap: 4px 12px; font-family: var(--f-mono); font-size: 11.5px; color: var(--muted); }
+.legend-head { grid-column: 1 / -1; line-height: 1.45; margin-bottom: 6px; }
+.legend-head b { color: var(--fg); font-weight: 500; }
+.legend-bar { width: 14px; height: 170px; background: var(--jet-v); border: 1px solid rgba(255,255,255,.18); }
+.legend-ticks { display: flex; flex-direction: column; justify-content: space-between; height: 170px; font-variant-numeric: tabular-nums; }
+.legend-ticks span:first-child { color: #FF6A5A; }
+@media (max-height: 980px) { .legend { display: none; } }   /* short laptop screens: the legend would run into the name */
+.modes { position: absolute; right: clamp(16px, 4vw, 40px); bottom: clamp(28px, 6vh, 64px); display: flex; flex-direction: column; align-items: flex-end; gap: 10px; pointer-events: auto; }
+.mode-row { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.mode-btn { font: 500 12.5px/1 var(--f-mono); letter-spacing: .06em; color: var(--muted); background: rgba(16,26,38,.72); border: 1px solid var(--line); padding: 10px 12px; border-radius: 3px; cursor: pointer; text-align: left; }
+.mode-btn b { display: block; color: var(--fg); font-weight: 500; margin-bottom: 4px; }
+.mode-btn[aria-pressed="true"] { border-color: var(--accent); color: var(--fg); box-shadow: inset 0 -2px 0 var(--accent); }
+.modes small { font-family: var(--f-mono); font-size: 11px; color: var(--dim); max-width: 34ch; text-align: right; line-height: 1.5; }
+.triad { position: absolute; right: clamp(16px, 4vw, 40px); top: 28px; font-family: var(--f-mono); font-size: 11.5px; color: var(--dim); text-align: right; line-height: 1.6; }
+
+/* ---------- sections ---------- */
+section { padding-block: clamp(64px, 10vw, 120px); border-bottom: 1px solid var(--line); }
+.sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: clamp(32px, 5vw, 56px); }
+h2 { font-family: var(--f-display); font-stretch: 112%; font-weight: 800; font-size: clamp(30px, 4.4vw, 56px); line-height: 1; margin: 10px 0 0; letter-spacing: -.01em; text-wrap: balance; }
+h3 { font-family: var(--f-display); font-stretch: 105%; font-weight: 700; font-size: clamp(21px, 2.2vw, 28px); line-height: 1.15; margin: 0; text-wrap: balance; }
+.lead { color: var(--muted); max-width: 62ch; margin: 0; }
+
+/* about */
+.about { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 80px); }
+.about-text p { margin: 0 0 1.1em; color: #C9D4E0; max-width: 62ch; }
+.spec { border-top: 1px solid var(--line); }
+.spec-row { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 16px; padding-block: 16px; border-bottom: 1px solid var(--line); }
+.spec-row .mono { padding-top: 3px; }
+.spec-row div { min-width: 0; }
+.tools { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.tools b { display: block; font-weight: 600; font-size: 14px; margin-bottom: 2px; }
+.tools span { display: block; color: var(--muted); font-size: 14px; line-height: 1.5; }
+
+/* experience */
+.timeline { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--line); }
+.job { padding: 24px 22px 28px 0; position: relative; min-width: 0; }
+.job + .job { padding-left: 22px; border-left: 1px solid var(--line); }
+.job::before { content: ""; position: absolute; top: -4px; left: 0; width: 7px; height: 7px; background: var(--muted); }
+.job + .job::before { left: 22px; }
+.job.now::before { background: var(--accent); box-shadow: 0 0 0 4px rgba(255,181,71,.18); }
+.job .mono { color: var(--accent); }
+.job h3 { margin: 10px 0 4px; font-size: 21px; }
+.job .role { font-weight: 600; font-size: 14.5px; margin: 0 0 10px; }
+.job p { margin: 0; color: var(--muted); font-size: 15px; }
+.edu { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 40px; padding-top: 28px; border-top: 1px dashed var(--line); }
+.edu p { margin: 6px 0 0; color: var(--muted); font-size: 15px; }
+
+/* projects: featured */
+.feature { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 64px); align-items: center; padding-block: clamp(36px, 5vw, 56px); border-top: 1px solid var(--line); }
+.feature:nth-of-type(even) .viewport-wrap { order: 2; }
+.feature .meta { color: var(--accent); }
+.feature h3 { margin: 12px 0 14px; font-size: clamp(24px, 2.8vw, 36px); }
+.feature p { margin: 0 0 18px; color: #C2CEDB; max-width: 58ch; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font-family: var(--f-mono); font-size: 12px; letter-spacing: .04em; padding: 7px 10px; border: 1px solid var(--line); border-radius: 3px; color: var(--fg); background: var(--bg-2); }
+.chip i { font-style: normal; color: var(--accent); }
+
+/* work experience (VADEN) */
+.work { margin-top: clamp(40px, 6vw, 64px); }
+.work .photo { aspect-ratio: 4 / 3; }
+.work-logo { display: block; height: 34px; width: auto; margin-bottom: 18px; }
+.fails { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 6px 0 0; }
+.fails figure { margin: 0; min-width: 0; }
+.fails img { display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border: 1px solid var(--line); border-radius: 3px; }
+.fails figcaption { margin-top: 7px; font: 11px/1.4 var(--f-mono); color: var(--dim); letter-spacing: .06em; text-transform: uppercase; }
+
+.viewport-wrap { perspective: 1200px; min-width: 0; }
+.viewport { border: 1px solid var(--line); background: var(--panel); border-radius: 4px; overflow: hidden; transform-style: preserve-3d; transition: transform .25s ease, box-shadow .25s ease; will-change: transform; }
+.viewport:hover { box-shadow: 0 30px 60px -30px rgba(0,0,0,.8), 0 0 0 1px #2E4561; }
+.vp-head { display: flex; justify-content: space-between; gap: 12px; padding: 9px 12px; border-bottom: 1px solid var(--line); font-family: var(--f-mono); font-size: 11.5px; color: var(--dim); letter-spacing: .06em; text-transform: uppercase; }
+.vp-head span:first-child::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #3DDC84; margin-right: 8px; vertical-align: middle; }
+.vp-body { display: grid; gap: 1px; background: var(--line); }
+.vp-body.two { grid-template-columns: 1.4fr 1fr; }
+.shot { background: var(--screen); aspect-ratio: 16 / 10; width: 100%; height: 100%; object-fit: contain; }
+.photo { aspect-ratio: 16 / 10; width: 100%; height: 100%; object-fit: cover; background: var(--panel); }
+.vp-body.two .shot, .vp-body.two .photo { aspect-ratio: auto; height: 100%; min-height: 220px; }
+.strip { aspect-ratio: auto; height: auto; }
+
+/* 3D model stages */
+.vp-tabs { display: flex; gap: 4px; }
+.tab, .stage-switch button { font: 500 11px/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--dim); background: transparent; border: 1px solid var(--line); border-radius: 2px; padding: 5px 8px; cursor: pointer; }
+.tab[aria-pressed="true"], .stage-switch button[aria-pressed="true"] { color: var(--fg); border-color: var(--accent); }
+.tab:hover, .stage-switch button:hover { color: var(--fg); }
+.stage, .vp-2d { position: relative; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; cursor: grab; touch-action: pan-y;
+  background: radial-gradient(85% 80% at 50% 42%, #1B2D44 0%, #0F1824 70%); }
+.stage:active { cursor: grabbing; }
+.vp-2d { cursor: default; }
+.stage::before, .vp-2d::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .18;
+  background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 32px 32px; }
+.stage canvas, .vp-2d canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.stage-note { position: absolute; left: 12px; bottom: 10px; font: 11px/1.55 var(--f-mono); color: var(--dim); pointer-events: none; text-shadow: 0 0 4px #0C131C, 0 0 8px #0C131C; }
+.mini-jet { display: block; width: 72px; height: 5px; margin-bottom: 6px; background: var(--jet); }
+.stage-switch { position: absolute; right: 10px; top: 10px; display: flex; gap: 6px; z-index: 1; }
+.stage-switch button { background: rgba(15,24,36,.8); }
+.stage-status { position: absolute; inset: 0; display: grid; place-items: center; font: 11.5px var(--f-mono); color: var(--dim); letter-spacing: .08em; text-transform: uppercase; pointer-events: none; }
+
+/* projects: grid */
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: 20px; }
+.card { display: flex; flex-direction: column; min-width: 0; }
+.card .viewport { height: 100%; display: flex; flex-direction: column; }
+.card .card-body { padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.card .meta { color: var(--accent); }
+.card h3 { font-size: 20px; }
+.card p { margin: 0; color: var(--muted); font-size: 15px; }
+.card .result { margin-top: auto; padding-top: 12px; border-top: 1px dashed var(--line); display: flex; align-items: baseline; gap: 10px; }
+.card .result strong { font-family: var(--f-display); font-stretch: 112%; font-weight: 800; font-size: 28px; line-height: 1; color: var(--fg); }
+.card .result span { font-size: 13px; color: var(--muted); }
+
+.methods { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; margin-top: 20px; }
+.methods figure { margin: 0; background: var(--panel); display: flex; flex-direction: column; }
+.methods img { aspect-ratio: 4 / 3; object-fit: contain; background: var(--screen); width: 100%; }
+.methods figcaption { padding: 12px 14px 14px; font-size: 14px; color: var(--muted); }
+.methods figcaption b { color: var(--fg); font-weight: 600; display: block; }
+
+/* contact: drawing title block */
+.tblock { margin-top: 18px; display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 1px; background: var(--line); border: 2px solid var(--muted); }
+.tb-cell { display: flex; flex-direction: column; gap: 10px; padding: 22px 24px 24px; background: var(--bg); min-width: 0; }
+.tb-wide { grid-row: span 2; justify-content: space-between; background: linear-gradient(180deg, #161F2B, var(--bg) 70%); }
+.tb-wide .tb-val { font-size: clamp(22px, 2.6vw, 34px); }
+.tb-val { font-family: var(--f-display); font-stretch: 112%; font-weight: 700; font-size: clamp(19px, 1.9vw, 24px); line-height: 1.2; overflow-wrap: anywhere; user-select: all; }
+.tb-link { text-decoration: none; user-select: auto; }
+.tb-link:hover { color: var(--accent); }
+.tb-sub { color: var(--muted); font-size: 15px; }
+.tb-cell .copy { align-self: flex-start; }
+.copy { font: 500 11.5px/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); background: transparent; border: 1px solid var(--line); border-radius: 3px; padding: 8px 10px; cursor: pointer; }
+.copy:hover { color: var(--fg); border-color: var(--muted); }
+footer { padding-block: 28px; }
+footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.jetline { height: 3px; background: var(--jet); }
+
+/* ---------- responsive ---------- */
+@media (max-width: 980px) {
+  .timeline { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .job:nth-child(3) { border-left: 0; padding-left: 0; }
+  .job:nth-child(3)::before { left: 0; }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .methods { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .about, .feature { grid-template-columns: minmax(0, 1fr); }
+  .tblock { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .tb-wide { grid-column: span 2; grid-row: auto; }
+  .feature:nth-of-type(even) .viewport-wrap { order: 0; }
+  .edu { grid-template-columns: minmax(0, 1fr); }
+  .tools { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .nav { display: none; }
+  .legend-bar, .legend-ticks { height: 110px; }
+  .triad { display: none; }
+  .modes { left: 16px; right: 16px; bottom: 16px; align-items: stretch; }
+  .mode-row { justify-content: stretch; }
+  .mode-btn { flex: 1; }
+  .modes small { text-align: left; }
+  .hero-copy { bottom: 150px; right: 16px; }
+}
+@media (max-width: 560px) {
+  .legend { display: none; }
+  .job + .job { border-left: 0; padding-left: 0; }
+  .job + .job::before { left: 0; }
+  .spec-row { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .vp-body.two { grid-template-columns: minmax(0, 1fr); }
+  .tblock { grid-template-columns: minmax(0, 1fr); }
+  .tb-wide { grid-column: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .viewport { transition: none; }
+}
+</style>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="#top"><span aria-hidden="true"></span>M. B. ŞEN</a>
+    <nav class="nav" aria-label="Bölümler">
+      <a href="#hakkimda">Hakkımda</a>
+      <a href="#deneyim">Deneyim</a>
+      <a href="#projeler">Projeler</a>
+      <a href="#iletisim">İletişim</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero" id="top">
+  <div class="grid-bg" aria-hidden="true"></div>
+  <canvas id="sim" aria-label="Bitirme projesindeki kuyruk kanadının titreşim modunu ve etrafındaki girdaplı akışı gösteren etkileşimli 3D model"></canvas>
+  <div class="hero-ui">
+    <div class="legend" aria-hidden="true">
+      <div class="legend-head">B: Modal<br><b>Toplam Deformasyon</b><br><span id="lg-mode">Mod 1 · 27,82 Hz</span><br>Birim: normalize</div>
+      <div class="legend-bar"></div>
+      <div class="legend-ticks"><span>1,00 Maks</span><span>0,75</span><span>0,50</span><span>0,25</span><span>0,00 Min</span></div>
+    </div>
+    <div class="triad" aria-hidden="true">273 m/s akış · 32° hücum açısı<br>temsili görselleştirme</div>
+    <div class="hero-copy">
+      <div class="mono">Makine Mühendisi · Yapısal ve Akış Analizi</div>
+      <h1>MUSA BEDİRHAN ŞEN</h1>
+      <p>Yapısal ve akış analizi odaklı makine mühendisi. ANSYS ve SolidWorks ile savunma, tarım makineleri ve ağır vasıta projeleri.</p>
+    </div>
+    <div class="modes">
+      <div class="mode-row" role="group" aria-label="Titreşim modu">
+        <button class="mode-btn" type="button" id="mode-1" data-mode="0" aria-pressed="true"><b>Mod 1</b>27,82 Hz</button>
+        <button class="mode-btn" type="button" id="mode-2" data-mode="1" aria-pressed="false"><b>Mod 2</b>161,36 Hz</button>
+        <button class="mode-btn" type="button" id="mode-3" data-mode="2" aria-pressed="false"><b>Mod 3</b>217,02 Hz</button>
+      </div>
+      <small>Bitirme projesindeki kuyruk prototipinin titreşim modları, temsili gösterim. Modeli sürükleyerek çevirin.</small>
+    </div>
+  </div>
+</div>
+<div class="jetline" aria-hidden="true"></div>
+
+<main>
+  <section id="hakkimda">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="mono">Tanıtım</div><h2>Hakkımda</h2></div>
+      </div>
+      <div class="about">
+        <div class="about-text">
+          <p>KTO Karatay Üniversitesi Makine Mühendisliği bölümünü bölüm üçüncüsü olarak tamamladım; şu anda Necmettin Erbakan Üniversitesi'nde tezli yüksek lisans yapıyorum.</p>
+          <p>Üniversite yıllarımdan itibaren ANSYS ve SolidWorks ile makine parçalarının dayanım, titreşim ve hava akışı analizleri üzerine çalıştım; bu çalışmaları savunma, tarım makineleri ve ağır vasıta projelerinde uyguladım. TEKNOFEST'te elektrikli araç takımımızın mekanik tasarım kaptanlığını üstlendim; TUSAŞ LIFT-UP projelerinden biri olan bitirme projemde savaş uçağı kuyruklarındaki titreşimleri inceledim.</p>
+          <p>Şu anda Türkiye'nin 81., Konya'nın en büyük Ar-Ge merkezine sahip VADEN'de ağır vasıta havalı grup ürünlerinin satış sonrası teknik süreçlerini yönetiyorum. Yabancı müşterilerle İngilizce iletişim kurarak şikâyet analizi, kök neden tespiti, revizyon yönetimi ve araç testlerinin raporlanmasında görev alıyorum. Hedefim, bu deneyimi üniversiteden beri hedeflediğim analiz mühendisliği alanına taşımak.</p>
+        </div>
+        <div class="spec">
+          <div class="spec-row"><span class="mono">Eğitim</span><div>KTO Karatay Üni. · Makine Müh. (2021–2025)<br>Necmettin Erbakan Üni. · Tezli Yüksek Lisans (2026–)</div></div>
+          <div class="spec-row"><span class="mono">Aktif</span><div>VADEN Original · Ürün Geliştirme ve Satış Sonrası Mühendisi</div></div>
+          <div class="spec-row"><span class="mono">Programlar</span>
+            <div class="tools">
+              <div><b>Simülasyon</b><span>ANSYS Mechanical</span><span>ANSYS Fluent</span><span>ANSYS Discovery</span><span>Rocky DEM</span></div>
+              <div><b>Tasarım</b><span>SolidWorks</span><span>ANSYS SpaceClaim</span></div>
+              <div><b>Test ve Ölçüm</b><span>DewesoftX</span><span>LMS Test.Lab</span></div>
+            </div>
+          </div>
+          <div class="spec-row"><span class="mono">Dil</span><div>İngilizce · İleri</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="deneyim">
+    <div class="wrap">
+      <div class="sec-head"><div><div class="mono">Özgeçmiş</div><h2>Deneyim ve Eğitim</h2></div></div>
+      <div class="timeline">
+        <article class="job now"><div class="mono">Eyl 2025 – devam</div><h3>VADEN Original</h3><p class="role">Ürün Geliştirme ve Satış Sonrası Müh.</p><p>Yurt dışı şikâyetlerinde kök neden analizi, revizyon yönetimi ve araç üstü validasyon testleri.</p></article>
+        <article class="job"><div class="mono">Haz–Ağu 2024</div><h3>ASELSAN SST</h3><p class="role">Analiz Mühendisi · Stajyer</p><p>Makineli top yapısal testinde strain gage ve ivmeölçer yerleşimi; 11 cıvata modelleme yönteminin karşılaştırması.</p></article>
+        <article class="job"><div class="mono">Tem–Eyl 2023</div><h3>Genç Değirmen</h3><p class="role">Analiz Müh. · Eğitim Asistanı</p><p>ANSYS Mechanical eğitimlerine asistanlık; firma ürünlerinde statik ve dinamik analizler.</p></article>
+      </div>
+      <article class="feature work">
+        <div class="viewport-wrap"><div class="viewport tilt">
+          <div class="vp-head"><span>Müşteri eğitimi</span><span>Kompresör servis</span></div>
+          <div class="vp-body"><img class="photo" src="img/vaden-egitim.jpg" alt="Müşteri ekibiyle kompresör servis eğitimi sonrası toplu fotoğraf" loading="lazy"></div>
+        </div></div>
+        <div>
+          <img class="work-logo" src="img/vaden-logo.png" alt="VADEN Original" loading="lazy">
+          <div class="mono meta">VADEN Original · Eyl 2025 – devam</div>
+          <h3>İş deneyimim</h3>
+          <p>Yurt dışı müşterilerimizden gelen garanti taleplerini, ürün geliştirme ve müşteri memnuniyetini esas alarak inceliyoruz. Elde ettiğimiz sonuçları yorumlayıp ilgili birimlere kök neden analizi raporları sunuyor, üründeki üretim hatalarının en aza indirilmesine katkı sağlıyoruz. Bu süreçte sanayideki ustalar ve yetkili servislerle birlikte çalışarak ürünlerle ilgili güncel bilgileri sürekli takip etme fırsatı buldum; başta kompresörler olmak üzere ağır vasıta araç sistemlerinde geniş bir bilgi birikimi edindim.</p>
+          <div class="fails">
+            <figure><img src="img/vaden-korozyon.jpg" alt="Kalitesiz soğutma suyu nedeniyle korozyona uğramış kompresör kapak plakası" loading="lazy"><figcaption>Korozyon</figcaption></figure>
+            <figure><img src="img/vaden-kavrama.jpg" alt="Isı izi ve aşınma görülen kavrama diskleri" loading="lazy"><figcaption>Kavrama aşınması</figcaption></figure>
+            <figure><img src="img/vaden-yatak.jpg" alt="Aşınmış biyel yatağı" loading="lazy"><figcaption>Yatak aşınması</figcaption></figure>
+          </div>
+        </div>
+      </article>
+      <div class="edu">
+        <div><div class="mono">Yüksek Lisans · 2026–</div><p>Necmettin Erbakan Üni., Makine Müh. (tezli)</p></div>
+        <div><div class="mono">Lisans · 2021–2025</div><p>KTO Karatay Üni., Makine Müh. — %30 İngilizce, tam burslu, MÜDEK akrediteli</p></div>
+        <div><div class="mono">Sertifikalar</div><p>Numesys CFD Kampı (2026–) · İleri SolidWorks (2023) · ANSYS Bilgisayar Destekli Analiz (2022–24)</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projeler">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="mono">Seçilmiş çalışmalar</div><h2>Projeler</h2></div>
+        <p class="lead">Akademik, takım ve endüstriyel projelerden seçmeler. Görsellerin hepsi bu çalışmaların kendi analiz çıktıları ve fotoğraflarıdır.</p>
+      </div>
+
+      <article class="feature">
+        <div class="viewport-wrap"><div class="viewport" data-viewer>
+          <div class="vp-head"><span>Rüzgâr tüneli test modeli</span><span class="vp-tabs"><button class="tab" type="button" data-tab="3d" aria-pressed="true">3D</button><button class="tab" type="button" data-tab="img" aria-pressed="false">Görseller</button></span></div>
+          <div class="stage" data-model="bitirme" role="img" aria-label="Bitirme projesindeki ikiz kuyruklu uçak test modelinin, 32° hücum açısında temsili akım çizgileriyle döndürülebilir 3D görünümü"><div class="stage-switch"><button type="button" data-flow aria-pressed="true">Akım çizgileri</button></div><div class="stage-note"><span data-flow-note><span class="mini-jet"></span>Akım çizgileri: hız · 32° · temsili<br></span>Sürükleyerek çevirin</div></div>
+          <div class="vp-body two" hidden>
+            <img class="shot" src="img/buffet-girdap.png" alt="Uçak gövdesi ve kanatlarında oluşan burun, iç kanat ve çıkıntı girdapları" loading="lazy">
+            <img class="photo" src="img/buffet-test.png" alt="Kuyruk prototipi, ivmeölçerler ve modal çekiçle kurulan titreşim testi düzeneği" loading="lazy">
+          </div>
+        </div></div>
+        <div>
+          <div class="mono meta">Bitirme projesi · TUSAŞ LIFT-UP · 2025</div>
+          <h3>Savaş uçağı kuyruğunda türbülans kaynaklı titreşim</h3>
+          <p>KTO Karatay Üniversitesi bitirme projesi olan bu çalışma, TUSAŞ LIFT-UP projelerinden biridir. İkiz kuyruklu savaş uçaklarının belirli hücum açılarında oluşturduğu türbülansın kuyruk kanatlarında yol açtığı titreşimler incelenmiştir. Hava akışı bilgisayarda modellenmiş, kuyruğun titreşim davranışı alüminyum bir prototip üzerinde modal testle doğrulanmıştır.</p>
+          <div class="chips"><span class="chip"><i>32°</i> kritik hücum açısı</span><span class="chip">Test–analiz farkı <i>%4–10</i></span><span class="chip">Fluent · Mechanical · DewesoftX</span></div>
+        </div>
+      </article>
+
+      <article class="feature">
+        <div class="viewport-wrap"><div class="viewport" data-viewer>
+          <div class="vp-head"><span>Kapsül EC · 3D model</span><span class="vp-tabs"><button class="tab" type="button" data-tab="3d" aria-pressed="true">3D</button><button class="tab" type="button" data-tab="img" aria-pressed="false">Görseller</button></span></div>
+          <div class="stage" data-model="kapsulIc" role="img" aria-label="Kapsül EC aracının 3D modeli: dış kabuklu ve kabuksuz hâliyle şase, roll bar, koltuklar ve tekerlekler"><div class="stage-switch"><button type="button" data-overlay="on" aria-pressed="true">Kabuklu</button><button type="button" data-overlay="off" aria-pressed="false">Kabuksuz</button></div><div class="stage-note">Sürükleyerek çevirin</div></div>
+          <div class="vp-body two" hidden>
+            <img class="photo" src="img/kapsul-arac.jpg" alt="Kapsül EC elektrikli aracının üretilmiş, mavi boyalı son hâli" loading="lazy">
+            <img class="photo" src="img/kapsul-kabuk.jpg" alt="Araç kabuğunun render görüntüsü" loading="lazy">
+          </div>
+        </div></div>
+        <div>
+          <div class="mono meta">TEKNOFEST Efficiency Challenge · 2025</div>
+          <h3>Kapsül EC: tasarımdan üretime elektrikli araç</h3>
+          <p>Mekanik tasarım ve optimizasyon kaptanı olarak aracın şase ve kabuk tasarımı, kabuk aerodinamiği ve şase dayanım analizleri yürütülmüştür. Kabuk köpük kalıptan kompozite, şase profil kesiminden kaynağa kadar takımca üretilmiştir.</p>
+          <div class="chips"><span class="chip">Sürükleme katsayısı <i>Cd 0,44</i></span><span class="chip">Şase min. EK <i>1,79</i></span><span class="chip">Roll bar esneme <i>−%53</i></span></div>
+        </div>
+      </article>
+
+      <article class="feature">
+        <div class="viewport-wrap"><div class="viewport" data-viewer>
+          <div class="vp-head"><span>Hawkeye · 3D model</span><span class="vp-tabs"><button class="tab" type="button" data-tab="3d" aria-pressed="true">3D</button><button class="tab" type="button" data-tab="img" aria-pressed="false">Görseller</button></span></div>
+          <div class="stage" data-model="iha" role="img" aria-label="Hawkeye savaşan İHA'nın render renkleriyle boyanmış, döndürülebilir 3D modeli"><div class="stage-switch"><button type="button" data-paint="on" aria-pressed="true">Boyalı</button><button type="button" data-paint="off" aria-pressed="false">Sade</button></div><div class="stage-note">Sürükleyerek çevirin</div></div>
+          <div class="vp-body two" hidden>
+            <img class="photo" src="img/iha-ana.jpg" alt="Hawkeye savaşan İHA önden-yandan render görüntüsü" loading="lazy">
+            <img class="photo" src="img/iha-arka.jpg" alt="Hawkeye İHA arkadan görünüş, ikiz eğik dikey kuyruklar" loading="lazy">
+          </div>
+        </div></div>
+        <div>
+          <div class="mono meta">TEKNOFEST 2024 · Tasarım bölüm başkanı</div>
+          <h3>Hawkeye savaşan İHA: dış yapı tasarımı</h3>
+          <p>Hawkeye takımıyla 2023 yazında Teknofest Savaşan İHA kategorisi için başlanan projede, uçağın tüm dış yapısı SolidWorks'te tasarlanmıştır. Proje, tasarım aşamasının ardından takım içi nedenlerle sonlandırılmıştır.</p>
+          <div class="chips"><span class="chip">SolidWorks</span><span class="chip">İkiz eğik kuyruk</span></div>
+        </div>
+      </article>
+
+      <article class="feature">
+        <div class="viewport-wrap"><div class="viewport tilt">
+          <div class="vp-head"><span>Explicit Dynamics · atış anı</span><span>20 mm</span></div>
+          <div class="vp-body">
+            <img class="shot" src="img/rws-render.jpg" alt="20 mm uzaktan komutalı silah sisteminin CAD render görüntüsü" loading="lazy">
+            <img class="shot strip" src="img/rws-namlu.png" alt="Namlu boyunca ilerleyen mermi, Explicit Dynamics atış analizi" loading="lazy">
+          </div>
+        </div></div>
+        <div>
+          <div class="mono meta">Bireysel proje · 2024</div>
+          <h3>20 mm silah sisteminde atış yüklerinin analizi</h3>
+          <p>Araç üzerine yerleştirilen ve uzaktan kumanda edilen 20 mm'lik bir silah sisteminde, atış anında oluşan yaklaşık 50 tonluk geri tepme kuvveti hesaplanmış, yay ve sönümleyicilerin darbeyi nasıl yumuşattığı incelenmiş ve taşıyıcı kolun dayanımı kontrol edilmiştir. Yapı saniyede 3 atış altında güvenli sınırlar içinde kalmıştır. Tasarım hazır alınmış, çalışmanın odağı analiz olmuştur.</p>
+          <div class="chips"><span class="chip">Explicit · Rigid Dynamics · Static</span><span class="chip">Kolda maks. <i>81 MPa</i></span></div>
+        </div>
+      </article>
+
+      <article class="feature">
+        <div class="viewport-wrap"><div class="viewport" data-viewer>
+          <div class="vp-head"><span>Scramjet · iç akış</span><span class="vp-tabs"><button class="tab" type="button" data-tab="3d" aria-pressed="true">3D</button><button class="tab" type="button" data-tab="2d" aria-pressed="false">2D kesit</button></span></div>
+          <div class="stage" data-model="scramjet" role="img" aria-label="Scramjet motorunun saydam akış hacmi; içinde 0° hücum açısındaki Fluent Mach ve basınç sonuçları kesit olarak ve akan parçacıklar"><div class="stage-switch"><button type="button" data-slice="mach0" aria-pressed="true">Mach</button><button type="button" data-slice="bas0" aria-pressed="false">Basınç</button></div><div class="stage-note"><span class="mini-jet"></span><span data-slice-note>Kesit: Fluent · Mach sayısı · 0°</span><br>Sürükleyerek çevirin</div></div>
+          <div class="vp-2d" data-flat hidden role="img" aria-label="Scramjet motorunun 2D kesitinde Fluent sonucu ve şok dalgalarından geçen parçacıklar">
+            <canvas></canvas>
+            <div class="stage-switch"><button type="button" data-view="mach0" aria-pressed="true">Mach</button><button type="button" data-view="bas0" aria-pressed="false">Basınç</button><button type="button" data-view="mach5" aria-pressed="false">Mach · 5°</button></div>
+            <div class="stage-note"><span class="mini-jet"></span><span data-note>Mach sayısı · 0° · 0–10</span><br>Parçacıklar yerel hızla akar</div>
+          </div>
+        </div></div>
+        <div>
+          <div class="mono meta">Numesys CFD Eğitim Kampı · Bitirme projesi · 2026</div>
+          <h3>Hipersonik scramjet motorunda iç akış</h3>
+          <p>Sesin 7,4 katı hızla uçan bir scramjet motorunun içindeki hava akışı ANSYS Fluent ile incelenmiştir. Motora giren havanın şok dalgalarıyla nasıl sıkıştığı, şokların nerede oluştuğu ve 0° ile 5° hücum açılarında motora etkiyen kuvvetlerin nasıl değiştiği hesaplanmıştır. Şok dalgalarının doğru yakalanması için hesaplama ağı bu bölgelerde otomatik olarak sıklaştırılmıştır.</p>
+          <p>Kesitteki renkler Fluent sonucudur. Parçacıklar bu sonuçtaki hıza göre hareket eder; şoktan geçtikleri yerde yavaşlayıp sıkışırlar.</p>
+          <div class="chips"><span class="chip">Giriş <i>Mach 7,4</i></span><span class="chip">Uyarlamalı ağ <i>8,4 M</i> hücre</span><span class="chip">ANSYS Fluent</span></div>
+        </div>
+      </article>
+
+      <div class="grid">
+        <article class="card"><div class="viewport tilt">
+          <div class="vp-head"><span>Static · von Mises</span><span>Genç Değirmen</span></div>
+          <img class="shot" src="img/tasayirma-gerilme.png" alt="Taş ayırma makinesi tepsisinin gerilme dağılımı" loading="lazy">
+          <div class="card-body"><div class="mono meta">Genç Değirmen · 2024</div><h3>Taş ayırma makinesinde hasar tespiti</h3><p>Salıncak hareketi Rigid Dynamics ile modellenmiş, tepsiye etkiyen kuvvetler statik analize aktarılmıştır.</p>
+          <div class="result"><strong>Aynı bölge</strong><span>analizdeki kritik nokta = sahadaki çatlak</span></div></div>
+        </div></article>
+        <article class="card"><div class="viewport" data-viewer>
+          <div class="vp-head"><span>Taşıyıcı şase</span><span class="vp-tabs"><button class="tab" type="button" data-tab="3d" aria-pressed="true">3D</button><button class="tab" type="button" data-tab="img" aria-pressed="false">Görsel</button></span></div>
+          <div class="stage" data-model="sasor" role="img" aria-label="İki katlı irmik sasörünün taşıyıcı şasesinin 3D modeli"><div class="stage-note">Sürükleyerek çevirin</div></div>
+          <div class="vp-body" hidden><img class="shot" src="img/sasor-render.png" alt="Taşıyıcı şase üzerinde iki katlı irmik sasörü" loading="lazy"></div>
+          <div class="card-body"><div class="mono meta">Genç Değirmen · 2023</div><h3>İki katlı irmik sasörü şasesi</h3><p>Tek katlı makinenin iki katlı hâli için taşıyıcı şase tasarlanmış, dayanımı Static Structural ile hesaplanmış; Rocky DEM ile ürün dağılımı incelenmiştir.</p>
+          <div class="result"><strong>2,18</strong><span>emniyet katsayısı</span></div></div>
+        </div></article>
+        <article class="card"><div class="viewport tilt">
+          <div class="vp-head"><span>Static · deformasyon</span><span>Endüstriyel vaka</span></div>
+          <img class="shot" src="img/makas-deformasyon.png" alt="Makaslı kaldırma tezgâhının toplam deformasyonu" loading="lazy">
+          <div class="card-body"><div class="mono meta">Endüstriyel vaka · 2023</div><h3>Makaslı kaldırma tezgâhında kol hasarı</h3><p>Piston kuvveti Rigid Dynamics ile bulunmuş, analiz gerçekte deformasyon görülen noktayı göstermiştir.</p>
+          <div class="result"><strong>9,49 mm</strong><span>maksimum deformasyon</span></div></div>
+        </div></article>
+      </div>
+
+      <div class="methods" aria-label="Yöntem çalışmaları">
+        <figure><img src="img/edu-topoloji.png" alt="Topoloji optimizasyonu sonucu hafifletilmiş plaka" loading="lazy"><figcaption><b>Topoloji optimizasyonu</b>Plaka aynı gerilme seviyesinde hafifletildi</figcaption></figure>
+        <figure><img src="img/edu-lineer.png" alt="Dairesel plakanın lineer analizi" loading="lazy"><figcaption><b>Lineer / nonlineer</b>Büyük deformasyonda lineer çözümün yanılgısı</figcaption></figure>
+        <figure><img src="img/edu-disli.png" alt="Dişli ve kremayer temas gerilmesi" loading="lazy"><figcaption><b>Dişli–kremayer</b>Temas ve gerilme analizi</figcaption></figure>
+        <figure><img src="img/edu-planet.png" alt="Planet dişli sisteminin hareket modeli" loading="lazy"><figcaption><b>Planet dişli</b>Rigid Dynamics ile hareket</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="iletisim">
+    <div class="wrap">
+      <div class="mono">İletişim</div>
+      <div class="tblock">
+        <div class="tb-cell tb-wide">
+          <span class="mono">E-posta</span>
+          <span class="tb-val" id="v-mail">bedirhansen29@gmail.com</span>
+          <button class="copy" type="button" data-copy="v-mail">Kopyala</button>
+        </div>
+        <div class="tb-cell">
+          <span class="mono">Telefon</span>
+          <span class="tb-val" id="v-tel">0543 613 20 66</span>
+          <button class="copy" type="button" data-copy="v-tel">Kopyala</button>
+        </div>
+        <div class="tb-cell">
+          <span class="mono">LinkedIn</span>
+          <a class="tb-val tb-link" href="https://www.linkedin.com/in/bedirhan-%C5%9Fen-428205240/" target="_blank" rel="noopener">bedirhan-şen ↗</a>
+        </div>
+        <div class="tb-cell">
+          <span class="mono">Konum</span>
+          <span class="tb-val">Konya</span>
+        </div>
+        <div class="tb-cell tb-name">
+          <span class="mono">Ad Soyad · Unvan</span>
+          <span class="tb-val">Musa Bedirhan Şen</span>
+          <span class="tb-sub">Makine Mühendisi</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap"><span class="mono">© 2026 Musa Bedirhan Şen</span><span class="mono">Makine Mühendisi · Konya</span></div></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function () {
+  "use strict";
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- copy buttons ---------- */
+  document.querySelectorAll(".copy").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var el = document.getElementById(btn.getAttribute("data-copy"));
+      var text = el.textContent.trim();
+      function done(label) { btn.textContent = label; setTimeout(function () { btn.textContent = "Kopyala"; }, 1600); }
+      function select() { var r = document.createRange(); r.selectNodeContents(el); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); done("Seçildi"); }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { done("Kopyalandı"); }, select);
+      } else { select(); }
+    });
+  });
+
+  /* ---------- 3D tilt on viewports ---------- */
+  if (!reduce && window.matchMedia("(hover: hover)").matches) {
+    document.querySelectorAll(".tilt").forEach(function (el) {
+      el.addEventListener("pointermove", function (e) {
+        var r = el.getBoundingClientRect();
+        var x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+        el.style.transform = "rotateY(" + (x * 7).toFixed(2) + "deg) rotateX(" + (-y * 7).toFixed(2) + "deg) translateZ(0)";
+      });
+      el.addEventListener("pointerleave", function () { el.style.transform = ""; });
+    });
+  }
+
+  /* ---------- hero simulation ---------- */
+  var canvas = document.getElementById("sim");
+  var hero = document.querySelector(".hero");
+  function fallback() {
+    canvas.remove();
+    var img = document.createElement("img");
+    img.className = "hero-fallback"; img.src = "img/buffet-cfd.png"; img.alt = "";
+    hero.insertBefore(img, hero.querySelector(".hero-ui"));
+  }
+  if (typeof THREE === "undefined") { fallback(); return; }
+  var renderer;
+  try { renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true }); }
+  catch (e) { fallback(); return; }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setClearColor(0x000000, 0);
+
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100);
+  camera.position.set(0, 0.2, 9.5);
+
+  var rig = new THREE.Group(); scene.add(rig);
+  var fin = new THREE.Group(); rig.add(fin);
+
+  /* fin planform: swept, tapered vertical tail (units arbitrary) */
+  var NX = 26, NY = 44, ROOT = 2.7, TIP = 1.15, SPAN = 3.3, SWEEP = 1.45;
+  function cantilever(b, s, x) { return (Math.cosh(b * x) - Math.cos(b * x)) - s * (Math.sinh(b * x) - Math.sin(b * x)); }
+  var n1 = cantilever(1.8751, 0.7341, 1), n3 = Math.abs(cantilever(4.6941, 1.0185, 1));
+  function shapes(eta, xi) {
+    var m1 = cantilever(1.8751, 0.7341, eta) / n1;
+    var m2 = eta * (xi - 0.42) / 0.58;
+    var m3 = cantilever(4.6941, 1.0185, eta) / n3;
+    return [m1, m2, m3];
+  }
+  function point(i, j) {
+    var eta = j / NY, xi = i / NX, chord = ROOT + (TIP - ROOT) * eta;
+    var x = SWEEP * eta + xi * chord - 1.9, y = SPAN * eta - SPAN / 2 - 0.15;
+    return { x: x, y: y, m: shapes(eta, xi) };
+  }
+
+  var pos = [], m1 = [], m2 = [], m3 = [], idx = [];
+  for (var j = 0; j <= NY; j++) for (var i = 0; i <= NX; i++) {
+    var p = point(i, j); pos.push(p.x, p.y, 0); m1.push(p.m[0]); m2.push(p.m[1]); m3.push(p.m[2]);
+  }
+  for (j = 0; j < NY; j++) for (i = 0; i < NX; i++) {
+    var a = j * (NX + 1) + i, b = a + 1, c = a + NX + 1, d = c + 1;
+    idx.push(a, c, b, b, c, d);
+  }
+  var g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute("m1", new THREE.Float32BufferAttribute(m1, 1));
+  g.setAttribute("m2", new THREE.Float32BufferAttribute(m2, 1));
+  g.setAttribute("m3", new THREE.Float32BufferAttribute(m3, 1));
+  g.setIndex(idx);
+
+  /* mesh lines: every 2nd grid line, displaced by the same shader */
+  var lp = [], l1 = [], l2 = [], l3 = [];
+  function pushSeg(pa, pb) {
+    lp.push(pa.x, pa.y, 0, pb.x, pb.y, 0);
+    l1.push(pa.m[0], pb.m[0]); l2.push(pa.m[1], pb.m[1]); l3.push(pa.m[2], pb.m[2]);
+  }
+  for (j = 0; j <= NY; j += 2) for (i = 0; i < NX; i++) pushSeg(point(i, j), point(i + 1, j));
+  for (i = 0; i <= NX; i += 2) for (j = 0; j < NY; j++) pushSeg(point(i, j), point(i, j + 1));
+  var lg = new THREE.BufferGeometry();
+  lg.setAttribute("position", new THREE.Float32BufferAttribute(lp, 3));
+  lg.setAttribute("m1", new THREE.Float32BufferAttribute(l1, 1));
+  lg.setAttribute("m2", new THREE.Float32BufferAttribute(l2, 1));
+  lg.setAttribute("m3", new THREE.Float32BufferAttribute(l3, 1));
+
+  var uniforms = { uT: { value: 0 }, uW: { value: new THREE.Vector3(1, 0, 0) }, uAmp: { value: 0.55 } };
+  var vtx = [
+    "attribute float m1; attribute float m2; attribute float m3;",
+    "uniform float uT; uniform vec3 uW; uniform float uAmp;",
+    "varying float vD; varying vec3 vP;",
+    "void main(){",
+    "  float shape = dot(vec3(m1,m2,m3), uW);",
+    "  float s = sin(uT);",
+    "  vec3 p = position; p.z += shape * s * uAmp;",
+    "  vD = clamp(abs(shape * s), 0.0, 1.0);",
+    "  vec4 mv = modelViewMatrix * vec4(p,1.0); vP = mv.xyz;",
+    "  gl_Position = projectionMatrix * mv;",
+    "}"
+  ].join("\n");
+  var frag = [
+   "varying float vD; varying vec3 vP;",
+    "vec3 jet(float t){ return clamp(vec3(1.5-abs(4.0*t-3.0), 1.5-abs(4.0*t-2.0), 1.5-abs(4.0*t-1.0)), 0.0, 1.0); }",
+    "void main(){",
+    "  float band = floor(vD * 9.0) / 8.0;",
+    "  float l = 0.82 + 0.18 * clamp(vP.y * 0.12 + 0.5, 0.0, 1.0);",
+    "  gl_FragColor = vec4(jet(clamp(band,0.0,1.0)) * l, 1.0);",
+    "}"
+  ].join("\n");
+  var mat = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vtx, fragmentShader: frag, side: THREE.DoubleSide });
+  mat.polygonOffset = true; mat.polygonOffsetFactor = 1; mat.polygonOffsetUnits = 1;
+  fin.add(new THREE.Mesh(g, mat));
+  var lineMat = new THREE.ShaderMaterial({
+    uniforms: uniforms, vertexShader: vtx, transparent: true, depthWrite: false,
+    fragmentShader: "precision highp float; varying float vD; varying vec3 vP; void main(){ gl_FragColor = vec4(0.04,0.07,0.12,0.55); }"
+  });
+  var lines = new THREE.LineSegments(lg, lineMat); lines.renderOrder = 2; fin.add(lines);
+
+  /* undeformed outline + fixed support at the root */
+  var outline = new THREE.BufferGeometry().setFromPoints([
+    new THREE.Vector3(point(0, 0).x, point(0, 0).y, 0), new THREE.Vector3(point(NX, 0).x, point(NX, 0).y, 0),
+    new THREE.Vector3(point(NX, NY).x, point(NX, NY).y, 0), new THREE.Vector3(point(0, NY).x, point(0, NY).y, 0),
+    new THREE.Vector3(point(0, 0).x, point(0, 0).y, 0)
+  ]);
+  fin.add(new THREE.Line(outline, new THREE.LineDashedMaterial({ color: 0x93A5BA, dashSize: 0.08, gapSize: 0.06, transparent: true, opacity: 0.45 })));
+  fin.children[fin.children.length - 1].computeLineDistances();
+  var base = new THREE.Mesh(new THREE.BoxGeometry(ROOT + 0.5, 0.12, 0.5), new THREE.MeshBasicMaterial({ color: 0x22334A }));
+  base.position.set(point(0, 0).x + ROOT / 2, point(0, 0).y - 0.06, 0); fin.add(base);
+  var hatch = new THREE.BufferGeometry(), hp = [];
+  for (var k = 0; k <= 12; k++) { var hx = point(0, 0).x - 0.2 + k * (ROOT + 0.4) / 12; hp.push(hx, point(0, 0).y - 0.12, 0.26, hx - 0.14, point(0, 0).y - 0.3, 0.26); }
+  hatch.setAttribute("position", new THREE.Float32BufferAttribute(hp, 3));
+  fin.add(new THREE.LineSegments(hatch, new THREE.LineBasicMaterial({ color: 0x5F7389 })));
+
+  /* vortex streams: helical particle paths sweeping into the tail */
+  var COUNT = 1600, ppos = new Float32Array(COUNT * 3), pcol = new Float32Array(COUNT * 3);
+  var seeds = [];
+  var cores = [{ y: 0.9, z: 0.55, k: 1.7 }, { y: -0.2, z: -0.5, k: -1.4 }, { y: 1.7, z: -0.2, k: 2.1 }];
+  for (var q = 0; q < COUNT; q++) {
+    var core = cores[q % 3], swirl = Math.random() < 0.82;
+    seeds.push({
+      x: -7 + Math.random() * 14, th: Math.random() * Math.PI * 2,
+      r: swirl ? 0.12 + Math.pow(Math.random(), 1.6) * 0.9 : 1.2 + Math.random() * 1.8,
+      core: core, sp: 1.6 + Math.random() * 1.2, swirl: swirl, yo: (Math.random() - 0.5) * 4
+    });
+  }
+  var pg = new THREE.BufferGeometry();
+  pg.setAttribute("position", new THREE.BufferAttribute(ppos, 3));
+  pg.setAttribute("color", new THREE.BufferAttribute(pcol, 3));
+  var pmat = new THREE.PointsMaterial({ size: 0.045, vertexColors: true, transparent: true, opacity: 0.85, depthWrite: false, blending: THREE.AdditiveBlending });
+  var particles = new THREE.Points(pg, pmat); rig.add(particles);
+  function jet(t) { return [Math.min(1, Math.max(0, 1.5 - Math.abs(4 * t - 3))), Math.min(1, Math.max(0, 1.5 - Math.abs(4 * t - 2))), Math.min(1, Math.max(0, 1.5 - Math.abs(4 * t - 1)))]; }
+  function stepParticles(dt) {
+    for (var q = 0; q < COUNT; q++) {
+      var s = seeds[q];
+      s.x += s.sp * dt; if (s.x > 7) s.x = -7;
+      var ang = s.th + s.x * s.core.k, y, z, speed;
+      if (s.swirl) {
+        var grow = 0.6 + 0.4 * Math.min(1, (s.x + 7) / 7);
+        y = s.core.y + Math.cos(ang) * s.r * grow; z = s.core.z + Math.sin(ang) * s.r * grow;
+        speed = 1 - Math.min(1, s.r / 1.0) * 0.75;
+      } else {
+        y = s.yo; z = Math.sin(s.th) * s.r; speed = 0.25 + 0.1 * Math.sin(s.x + s.th);
+      }
+      ppos[q * 3] = s.x; ppos[q * 3 + 1] = y; ppos[q * 3 + 2] = z;
+      var c = jet(Math.max(0, Math.min(1, speed)));
+      pcol[q * 3] = c[0] * 0.8; pcol[q * 3 + 1] = c[1] * 0.8; pcol[q * 3 + 2] = c[2] * 0.8;
+    }
+    pg.attributes.position.needsUpdate = true; pg.attributes.color.needsUpdate = true;
+  }
+
+  rig.rotation.set(0.12, -0.62, 0);
+  fin.position.set(1.0, 0, 0); fin.scale.setScalar(1.15);
+
+  /* interaction */
+  var yaw = -0.62, pitch = 0.12, tYaw = yaw, tPitch = pitch, dragging = false, lx = 0, ly = 0, lastInput = -1e9;
+  canvas.addEventListener("pointerdown", function (e) { dragging = true; lx = e.clientX; ly = e.clientY; canvas.setPointerCapture(e.pointerId); });
+  canvas.addEventListener("pointermove", function (e) {
+    if (!dragging) return;
+    tYaw += (e.clientX - lx) * 0.006; tPitch = Math.max(-0.6, Math.min(0.8, tPitch + (e.clientY - ly) * 0.004));
+    lx = e.clientX; ly = e.clientY; lastInput = performance.now();
+  });
+  function endDrag() { dragging = false; }
+  canvas.addEventListener("pointerup", endDrag); canvas.addEventListener("pointercancel", endDrag);
+
+  var target = new THREE.Vector3(1, 0, 0), weights = new THREE.Vector3(1, 0, 0);
+  var modeNames = ["Mod 1 · 27,82 Hz", "Mod 2 · 161,36 Hz", "Mod 3 · 217,02 Hz"];
+  var omegas = [2.2, 3.4, 4.6], omega = omegas[0], phase = 0;
+  var lgMode = document.getElementById("lg-mode");
+  document.querySelectorAll(".mode-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var m = +btn.getAttribute("data-mode");
+      target.set(m === 0 ? 1 : 0, m === 1 ? 1 : 0, m === 2 ? 1 : 0);
+      omega = omegas[m]; lgMode.textContent = modeNames[m];
+      document.querySelectorAll(".mode-btn").forEach(function (o) { o.setAttribute("aria-pressed", o === btn ? "true" : "false"); });
+      if (reduce) draw(0);
+    });
+  });
+
+  function resize() {
+    var w = canvas.clientWidth, h = canvas.clientHeight;
+    if (!w || !h) return;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.position.z = w < 760 ? 13 : 9.5;
+    camera.position.y = w < 760 ? 0.9 : 0.2;
+    camera.position.x = w < 760 ? 0 : -2.6;
+    camera.updateProjectionMatrix();
+  }
+  if (window.ResizeObserver) new ResizeObserver(resize).observe(canvas); else window.addEventListener("resize", resize);
+  resize();
+
+  var visible = true;
+  if (window.IntersectionObserver) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; }).observe(hero);
+
+  var last = performance.now();
+  function draw(dt) {
+    weights.lerp(target, Math.min(1, dt * 4 || 1));
+    uniforms.uW.value.copy(weights);
+    var idle = performance.now() - lastInput > 2500;
+    if (idle && !dragging && !reduce) tYaw += dt * 0.08;
+    yaw += (tYaw - yaw) * 0.08; pitch += (tPitch - pitch) * 0.08;
+    rig.rotation.set(pitch, yaw, 0);
+    renderer.render(scene, camera);
+  }
+  function loop(now) {
+    var dt = Math.min(0.05, (now - last) / 1000); last = now;
+    if (visible) {
+      phase += dt * omega; uniforms.uT.value = phase;
+      stepParticles(dt);
+      draw(dt);
+    }
+    requestAnimationFrame(loop);
+  }
+  if (reduce) {
+    uniforms.uT.value = Math.PI / 2; weights.copy(target); stepParticles(0); draw(0);
+    canvas.addEventListener("pointermove", function () { if (dragging) { yaw = tYaw; pitch = tPitch; draw(0); } });
+  } else {
+    stepParticles(0);
+    requestAnimationFrame(loop);
+  }
+})();
+
+/* ---------- project model viewers ---------- */
+(function () {
+  "use strict";
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* tabs: 3D / 2D section / images (works even without WebGL) */
+  document.querySelectorAll("[data-viewer]").forEach(function (vp) {
+    var panels = { "3d": vp.querySelector(".stage"), "2d": vp.querySelector(".vp-2d"), img: vp.querySelector(".vp-body") };
+    vp.querySelectorAll(".tab").forEach(function (t) {
+      t.addEventListener("click", function () {
+        var key = t.getAttribute("data-tab");
+        Object.keys(panels).forEach(function (k) { if (panels[k]) panels[k].hidden = k !== key; });
+        vp.querySelectorAll(".tab").forEach(function (o) { o.setAttribute("aria-pressed", o === t ? "true" : "false"); });
+        if (panels["3d"]._viewer) panels["3d"]._viewer.active = key === "3d";
+        if (panels["2d"] && panels["2d"]._flat) panels["2d"]._flat.show(key === "2d");
+      });
+    });
+  });
+  function showImages(stage) {
+    var vp = stage.closest("[data-viewer]");
+    var tab = vp && (vp.querySelector('.tab[data-tab="img"]') || vp.querySelector('.tab[data-tab="2d"]'));
+    if (tab) tab.click();
+  }
+
+  /* scramjet Mach field decoded from the Fluent contour (see models/scram-field.json) */
+  var fieldP = null;
+  function loadField() {
+    if (!fieldP) fieldP = fetch("models/scram-field.json").then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (d) {
+      function dec(s) { var b = atob(s), u = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
+      var f = { w: d.w, h: d.h, R: d.R, mach0: dec(d.mach0), mach5: dec(d.mach5) };
+      var rIn = d.R[Math.round(d.w * 0.06)];
+      /* half-height of the duct at u (0..1) as a fraction of the domain half-height; inlet block limited to the intake */
+      f.radius = function (u) { var r = d.R[Math.min(d.w - 1, Math.max(0, Math.floor(u * d.w)))]; return Math.min(r, rIn); };
+      /* Mach at u (0..1 along), v (0..1 across); masked cells fall back to Mach 2 */
+      f.mach = function (key, u, v) {
+        var a = f[key], ix = Math.min(d.w - 1, Math.max(0, Math.floor(u * d.w))), iy = Math.min(d.h - 1, Math.max(0, Math.floor(v * d.h)));
+        var q = a[iy * d.w + ix]; return q === 255 ? 2 : q / 25;
+      };
+      return f;
+    });
+    return fieldP;
+  }
+
+  /* 2D section: Fluent contour + particles moving with the local Mach number */
+  var FLAT_NOTE = { mach0: "Mach sayısı · 0° · 0–10", bas0: "Statik basınç · 0° · 0,01–10 MPa", mach5: "Mach sayısı · 5° · 0–10" };
+  function Flat(el) {
+    var self = this;
+    this.el = el; this.canvas = el.querySelector("canvas"); this.ctx = this.canvas.getContext("2d");
+    this.view = "mach0"; this.imgs = {}; this.on = false; this.visible = false; this.parts = [];
+    ["mach0", "bas0", "mach5"].forEach(function (k) {
+      var im = new Image(); im.onload = function () { self.draw(0); }; im.src = "img/scram-" + k + ".png"; self.imgs[k] = im;
+    });
+    for (var i = 0; i < 420; i++) this.parts.push({ u: Math.random(), s: Math.random() * 2 - 1 });
+    el.querySelectorAll("[data-view]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        self.view = b.getAttribute("data-view");
+        el.querySelectorAll("[data-view]").forEach(function (o) { o.setAttribute("aria-pressed", o === b ? "true" : "false"); });
+        el.querySelector("[data-note]").textContent = FLAT_NOTE[self.view];
+        self.draw(0);
+      });
+    });
+    loadField().then(function (f) { self.field = f; self.draw(0); }).catch(function () {});
+    if (window.ResizeObserver) new ResizeObserver(function () { self.resize(); }).observe(el);
+  }
+  Flat.prototype.show = function (on) { this.on = on; if (on) this.resize(); };
+  Flat.prototype.resize = function () {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2), w = this.el.clientWidth, h = this.el.clientHeight;
+    if (!w || !h) return;
+    this.canvas.width = Math.round(w * dpr); this.canvas.height = Math.round(h * dpr); this.dpr = dpr;
+    this.draw(0);
+  };
+  Flat.prototype.draw = function (dt) {
+    var c = this.ctx, W = this.canvas.width, H = this.canvas.height, im = this.imgs[this.view];
+    if (!W || !H) return;
+    c.clearRect(0, 0, W, H);
+    if (!im || !im.complete || !im.naturalWidth) return;
+    var iw = W * 0.92, ih = iw * im.naturalHeight / im.naturalWidth;
+    if (ih > H * 0.62) { ih = H * 0.62; iw = ih * im.naturalWidth / im.naturalHeight; }
+    var x0 = (W - iw) / 2, y0 = (H - ih) / 2 - H * 0.04;
+    c.drawImage(im, x0, y0, iw, ih);
+    var f = this.field; if (!f) return;
+    var fk = this.view === "mach5" ? "mach5" : "mach0";
+    c.strokeStyle = "rgba(255,255,255,0.78)"; c.lineWidth = 1.3 * this.dpr; c.lineCap = "round";
+    c.beginPath();
+    for (var i = 0; i < this.parts.length; i++) {
+      var p = this.parts[i], v = 0.5 + 0.5 * p.s * f.radius(p.u) * 0.9;
+      var m = f.mach(fk, p.u, v), sp = 0.15 + m / 7.4;
+      p.u += dt * 0.11 * sp;
+      if (p.u > 1) { p.u = 0; p.s = Math.random() * 2 - 1; }
+      var ut = Math.max(0, p.u - 0.014 * sp), vt = 0.5 + 0.5 * p.s * f.radius(ut) * 0.9;
+      v = 0.5 + 0.5 * p.s * f.radius(p.u) * 0.9;
+      c.moveTo(x0 + ut * iw, y0 + vt * ih); c.lineTo(x0 + p.u * iw, y0 + v * ih);
+    }
+    c.stroke();
+  };
+  var flats = [];
+  var fio = window.IntersectionObserver ? new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.target._flat) e.target._flat.visible = e.isIntersecting; });
+  }, { rootMargin: "100px 0px" }) : null;
+  document.querySelectorAll("[data-flat]").forEach(function (el) {
+    el._flat = new Flat(el); flats.push(el._flat);
+    if (fio) fio.observe(el); else el._flat.visible = true;
+  });
+  if (flats.length && !reduce) {
+    var flast = performance.now();
+    (function fl(now) {
+      var dt = Math.min(0.05, (now - flast) / 1000); flast = now;
+      for (var i = 0; i < flats.length; i++) if (flats[i].on && flats[i].visible) flats[i].draw(dt);
+      requestAnimationFrame(fl);
+    })(flast);
+  }
+
+  if (typeof THREE === "undefined") { document.querySelectorAll(".stage").forEach(showImages); return; }
+
+  var MODELS = {
+    /* frame: flow along +X, aircraft at 32° angle of attack, upper surface towards +Y */
+    bitirme: { src: "models/bitirme.txt", ry: -Math.PI / 4, frame: [0.71667, 0, 0.69741, -0.69741, 0, 0.71667, 0, -1, 0],
+      flow: {
+        /* path in model units, mirrored to both sides; x-based: burst = vortex breakdown start, turns per unit x */
+        vortices: [
+          { n: 30, path: [[-2.1, 0.84, 0.05], [-0.95, 0.75, 0.05], [-0.5, 0.69, 0.1], [0, 0.45, 0.16], [0.5, 0.27, 0.22], [1.4, 0.13, 0.28], [2.4, 0.05, 0.32]], rin: 0.18, r0: 0.012, r1: 0.05, burst: 0.75, rb: 0.15, turns: 2.4, hot: 0.86 },
+          { n: 46, path: [[-2.1, 0.62, 0.18], [-0.5, 0.48, 0.22], [0, 0.31, 0.32], [0.45, 0.17, 0.36], [0.85, 0.09, 0.4], [1.6, 0, 0.47], [2.4, -0.05, 0.53]], rin: 0.22, r0: 0.015, r1: 0.07, burst: 0.3, rb: 0.17, turns: 2.6, hot: 1 },
+          { n: 30, path: [[-2.1, 0.3, 0.42], [-0.05, 0.21, 0.41], [0.4, 0.03, 0.55], [0.9, -0.1, 0.62], [1.6, -0.2, 0.68], [2.4, -0.26, 0.72]], rin: 0.12, r0: 0.01, r1: 0.06, burst: 0.65, rb: 0.16, turns: 2.4, hot: 0.84 },
+          { n: 14, path: [[-2.1, -0.02, 0.88], [0.3, -0.1, 0.87], [0.5, -0.16, 0.86], [1.4, -0.24, 0.84], [2.4, -0.3, 0.82]], rin: 0.08, r0: 0.008, r1: 0.06, burst: 9, rb: 0, turns: 2, hot: 0.7 }
+        ],
+        free: 130
+      } },
+    /* chassis + roll cage assembly and outer shell, exported from the same SolidWorks assembly with a shared scale (keep: no re-centring) */
+    kapsulIc: { src: "models/kapsul-ic.txt", keep: true, overlay: "kapsulDis" },
+    kapsulDis: { src: "models/kapsul-dis.txt", keep: true },
+    iha: { src: "models/iha.txt", paint: true },
+    sasor: { src: "models/sasor.txt" },
+    /* transparent flow volume, Fluent Mach section inside, particles; spins about its own axis */
+    scramjet: { src: "models/scramjet.txt", glass: true, roll: true, yaw: 0.3, pitch: 0.28, zoom: 0.8, slice: "mach0", particles: 1400 }
+  };
+  var cache = {};
+  function parse(buf, cfg) {
+    var dv = new DataView(buf), nv = dv.getUint32(0, true), nt = dv.getUint32(4, true), o = 20;
+    var q = new Int16Array(buf, o, nv * 3); o += nv * 6;
+    var pos = new Float32Array(nv * 3);
+    for (var i = 0; i < pos.length; i++) pos[i] = q[i] / 32767;
+    var idx = nv < 65536 ? new Uint16Array(buf.slice(o, o + nt * 6)) : new Uint32Array(buf.slice(o, o + nt * 12));
+    var g = new THREE.BufferGeometry();
+    g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+    g.setIndex(new THREE.BufferAttribute(idx, 1));
+    if (cfg.ry) g.rotateY(cfg.ry);
+    g.computeBoundingBox(); var c = new THREE.Vector3();
+    if (!cfg.keep) { g.boundingBox.getCenter(c); g.translate(-c.x, -c.y, -c.z); }
+    if (cfg.frame) {
+      var f = cfg.frame;
+      g.applyMatrix4(new THREE.Matrix4().set(f[0], f[1], f[2], 0, f[3], f[4], f[5], 0, f[6], f[7], f[8], 0, 0, 0, 0, 1));
+      g.computeBoundingBox(); g.boundingBox.getCenter(c); g.translate(-c.x, -c.y, -c.z);
+    }
+    g.computeBoundingBox(); g.computeBoundingSphere(); g.computeVertexNormals();
+    var edges = new THREE.EdgesGeometry(g, 32);
+    return { geo: g, edges: edges };
+  }
+  function load(key) {
+    if (!cache[key]) cache[key] = fetch(MODELS[key].src).then(function (r) {
+      if (!r.ok) throw new Error(r.status); return r.text();
+    }).then(function (t) {
+      var s = atob(t.trim()), u = new Uint8Array(s.length);
+      for (var i = 0; i < s.length; i++) u[i] = s.charCodeAt(i);
+      return parse(u.buffer, MODELS[key]);
+    });
+    return cache[key];
+  }
+
+  /* representative streamlines: helical vortex tubes (with breakdown) + deflected free stream.
+     Not a flow solution, only a visual based on the project's Fluent results. */
+  function rng(seed) {
+    return function () {
+      seed = (seed + 0x6D2B79F5) | 0;
+      var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function sm(a, b, x) { var t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); }
+  function buildFlow(cfg) {
+    var rnd = rng(11), P = [], U = [], S = [], PH = [], W = [], I = [];
+    function line(pts, spd, w) {
+      var base = P.length / 3, n = pts.length, ph = rnd();
+      for (var i = 0; i < n; i++) { P.push(pts[i][0], pts[i][1], pts[i][2]); U.push(i / (n - 1)); S.push(spd[i]); PH.push(ph); W.push(w); }
+      for (i = 0; i < n - 1; i++) I.push(base + i, base + i + 1);
+    }
+    var up = new THREE.Vector3(0, 1, 0), N = new THREE.Vector3(), B = new THREE.Vector3();
+    cfg.vortices.forEach(function (vx) {
+      [1, -1].forEach(function (side) {
+        var curve = new THREE.CatmullRomCurve3(vx.path.map(function (p) { return new THREE.Vector3(p[0], p[1], p[2] * side); }));
+        var steps = 220, x0 = vx.path[0][0], x1 = vx.path[1][0], dir = -side;
+        var core = [], tan = [];
+        for (var i = 0; i <= steps; i++) { core.push(curve.getPointAt(i / steps)); tan.push(curve.getTangentAt(i / steps)); }
+        for (var k = 0; k < vx.n; k++) {
+          var th = rnd() * Math.PI * 2, wob = rnd() * 6, rf = 0.25 + rnd(), loss = 0.38 + 0.25 * rnd(), pts = [], spd = [];
+          var dy = (rnd() - 0.5) * 0.3, dz = (rnd() - 0.5) * 0.3, tw = 0.7 + 0.6 * rnd();
+          for (i = 0; i <= steps; i++) {
+            var c = core[i], t = tan[i], x = c.x;
+            var conv = sm(x0, x1, x), burst = sm(vx.burst, vx.burst + 0.55, x);
+            if (i) th += dir * Math.PI * 2 * vx.turns * tw * Math.abs(c.x - core[i - 1].x) * conv * conv * (1 - 0.6 * burst);
+            var r = vx.rin * rf * (1 - conv) + rf * (vx.r0 + (vx.r1 - vx.r0) * sm(x1, vx.burst, x)) + vx.rb * rf * burst * (1 + 0.45 * Math.sin(wob + 5 * x));
+            N.copy(up).addScaledVector(t, -up.dot(t)).normalize(); B.crossVectors(t, N);
+            var ox = Math.cos(th) * r, oy = Math.sin(th) * r, db = burst * burst;
+            pts.push([c.x + ox * N.x + oy * B.x, c.y + ox * N.y + oy * B.y + dy * db, c.z + ox * N.z + oy * B.z + dz * db]);
+            var hot = vx.hot - 0.18 * (rf - 0.25);
+            spd.push(Math.max(0.12, 0.44 + (hot - 0.44) * conv * conv - loss * burst));
+          }
+          line(pts, spd, 1);
+        }
+      });
+    });
+    /* free stream: over the aircraft (downwash), beside the wing tips and under the stand */
+    for (var made = 0, guard = 0; made < cfg.free && guard < 20000; guard++) {
+      var y0 = -1.05 + rnd() * 2.35, z0 = (rnd() * 2 - 1) * 1.45, az = Math.abs(z0);
+      var zone = y0 > 0.8 ? 1 : az > 0.98 ? 2 : y0 < -0.74 ? 3 : 0;
+      if (!zone) continue;
+      made++;
+      var pts = [], spd = [], jit = (rnd() - 0.5) * 0.06;
+      for (var i = 0; i <= 100; i++) {
+        var x = -2.2 + 4.7 * i / 100, y = y0, z = z0, bump = Math.exp(-Math.pow((x + 0.1) / 0.8, 2)), s = 0.42;
+        if (zone === 1) {
+          var near = Math.exp(-(y0 - 0.8) / 0.45) * Math.exp(-z0 * z0 / 1.2);
+          y -= 0.22 * sm(-1.2, 1.6, x) * near; s += 0.2 * bump * near;
+        } else if (zone === 2) {
+          z -= Math.sign(z0) * 0.05 * bump * Math.exp(-(az - 0.98) / 0.3); s += 0.05 * bump;
+        } else {
+          y -= 0.06 * bump * Math.exp(-z0 * z0); s -= 0.1 * bump * Math.exp(-z0 * z0);
+        }
+        pts.push([x, y, z]); spd.push(s + jit);
+      }
+      line(pts, spd, 0.5);
+    }
+    var g = new THREE.BufferGeometry();
+    g.setAttribute("position", new THREE.Float32BufferAttribute(P, 3));
+    g.setAttribute("aU", new THREE.Float32BufferAttribute(U, 1));
+    g.setAttribute("aSpd", new THREE.Float32BufferAttribute(S, 1));
+    g.setAttribute("aPh", new THREE.Float32BufferAttribute(PH, 1));
+    g.setAttribute("aW", new THREE.Float32BufferAttribute(W, 1));
+    g.setIndex(I);
+    return g;
+  }
+  var FLOW_VERT = [
+    "attribute float aU; attribute float aSpd; attribute float aPh; attribute float aW;",
+    "varying float vU; varying float vSpd; varying float vPh; varying float vW;",
+    "void main(){ vU = aU; vSpd = aSpd; vPh = aPh; vW = aW; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }"
+  ].join("\n");
+  var FLOW_FRAG = [
+    "uniform float uTime;",
+    "varying float vU; varying float vSpd; varying float vPh; varying float vW;",
+    "vec3 jet(float t){ return clamp(vec3(1.5-abs(4.0*t-3.0), 1.5-abs(4.0*t-2.0), 1.5-abs(4.0*t-1.0)), 0.0, 1.0); }",
+    "void main(){",
+    "  float p = fract(uTime * 0.42 - vU * 2.5 + vPh);",
+    "  float glow = pow(1.0 - p, 8.0);",
+    "  float a = vW * (0.2 + 0.9 * glow) * smoothstep(0.0, 0.06, vU) * (1.0 - smoothstep(0.86, 1.0, vU));",
+    "  float b = floor(clamp(vSpd, 0.0, 0.9999) * 9.0) / 8.0;",
+    "  gl_FragColor = vec4(jet(b) + glow * 0.3, a);",
+    "}"
+  ].join("\n");
+
+  var VERT = [
+    "varying vec3 vN; varying vec3 vV;",
+    "void main(){",
+    "  vN = normalize(normalMatrix * normal);",
+    "  vec4 mv = modelViewMatrix * vec4(position, 1.0); vV = -mv.xyz;",
+    "  gl_Position = projectionMatrix * mv;",
+    "}"
+  ].join("\n");
+  /* plain steel shading */
+  var FRAG = [
+    "varying vec3 vN; varying vec3 vV;",
+    "void main(){",
+    "  vec3 n = normalize(vN); if (!gl_FrontFacing) n = -n;",
+    "  vec3 v = normalize(vV), l = normalize(vec3(0.35, 0.85, 0.55));",
+    "  float d = max(dot(n, l), 0.0), hemi = 0.5 + 0.5 * n.y;",
+    "  float spec = pow(max(dot(n, normalize(l + v)), 0.0), 40.0);",
+    "  float rim = pow(1.0 - max(dot(n, v), 0.0), 2.5);",
+    "  vec3 col = vec3(0.6, 0.66, 0.73) * (0.2 + 0.2 * hemi + 0.6 * d) + spec * 0.22 + rim * vec3(0.18, 0.23, 0.3);",
+    "  gl_FragColor = vec4(col, 1.0);",
+    "}"
+  ].join("\n");
+  /* Hawkeye livery from the render: glossy candy red top, gloss black tails / nose tip / wing tips / underside.
+     Regions are in model space (span X, up Y, nose +Z); reflections from a simple studio gradient. */
+  var PAINT_VERT = [
+    "varying vec3 vP; varying vec3 vO; varying vec3 vN; varying vec3 vV;",
+    "void main(){",
+    "  vP = position; vO = normal; vN = normalize(normalMatrix * normal);",
+    "  vec4 mv = modelViewMatrix * vec4(position, 1.0); vV = -mv.xyz;",
+    "  gl_Position = projectionMatrix * mv;",
+    "}"
+  ].join("\n");
+  var PAINT_FRAG = [
+    "varying vec3 vP; varying vec3 vO; varying vec3 vN; varying vec3 vV;",
+    "float black(){",
+    "  float ax = abs(vP.x);",
+    "  float box = step(0.15, ax) * step(ax, 0.26) * step(vP.z, -0.3);",
+    "  float tail = box * max(step(-0.025, vP.y), step(0.6, abs(normalize(vO).x)) * step(-0.08, vP.y));",
+    "  float nose = smoothstep(0.77, 0.79, vP.z);",
+    "  float tip = smoothstep(0.87, 0.885, ax);",
+    "  float belly = max(smoothstep(-0.2, -0.35, normalize(vO).y), step(vP.y, -0.09));",
+    "  float nozzle = step(vP.z, -0.62) * step(ax, 0.15);",
+    "  return clamp(tail + nose + tip + belly + nozzle, 0.0, 1.0);",
+    "}",
+    "vec3 env(vec3 r){",
+    "  vec3 c = mix(vec3(0.03, 0.032, 0.038), vec3(0.32, 0.33, 0.36), smoothstep(-0.3, 0.8, r.y));",
+    "  c += vec3(1.5) * smoothstep(0.88, 0.97, dot(r, normalize(vec3(-0.35, 0.55, 0.75))));",
+    "  c += vec3(0.6) * smoothstep(0.92, 0.99, dot(r, normalize(vec3(0.7, 0.2, 0.6))));",
+    "  return c;",
+    "}",
+    "void main(){",
+    "  vec3 n = normalize(vN); if (!gl_FrontFacing) n = -n;",
+    "  vec3 v = normalize(vV), E = env(reflect(-v, n));",
+    "  float F = 0.04 + 0.96 * pow(1.0 - max(dot(n, v), 0.0), 5.0);",
+    "  float d = max(dot(n, normalize(vec3(0.35, 0.85, 0.55))), 0.0);",
+    "  vec3 red = vec3(0.3, 0.018, 0.035) * (0.2 + 0.8 * d) + E * mix(vec3(0.5, 0.1, 0.13), vec3(1.0), F);",
+    "  vec3 blk = vec3(0.02) * (0.3 + 0.7 * d) + E * mix(vec3(0.15), vec3(1.0), F);",
+    "  gl_FragColor = vec4(mix(red, blk, black()), 1.0);",
+    "}"
+  ].join("\n");
+  /* see-through shell for flow volumes */
+  var GLASS_FRAG = [
+    "varying vec3 vN; varying vec3 vV;",
+    "void main(){",
+    "  float f = pow(1.0 - abs(dot(normalize(vN), normalize(vV))), 2.5);",
+    "  gl_FragColor = vec4(vec3(0.62, 0.74, 0.88), 0.04 + 0.42 * f);",
+    "}"
+  ].join("\n");
+  var PART_VERT = [
+    "attribute float aM; uniform float uScale; varying float vM;",
+    "void main(){ vM = aM; vec4 mv = modelViewMatrix * vec4(position, 1.0);",
+    "  gl_PointSize = uScale * (0.55 + 0.45 * aM / 7.4) / -mv.z; gl_Position = projectionMatrix * mv; }"
+  ].join("\n");
+  var PART_FRAG = [
+    "varying float vM;",
+    "void main(){ vec2 c = gl_PointCoord - 0.5; float a = smoothstep(0.5, 0.15, length(c));",
+    "  gl_FragColor = vec4(mix(vec3(0.75, 0.88, 1.0), vec3(1.0), vM / 7.4), a * 0.9); }"
+  ].join("\n");
+
+  function Viewer(stage) {
+    this.stage = stage; this.active = true; this.visible = false; this.ready = false;
+    var cfg0 = MODELS[stage.getAttribute("data-model")] || {};
+    this.yaw = this.tYaw = cfg0.yaw != null ? cfg0.yaw : 0.7; this.pitch = this.tPitch = cfg0.pitch != null ? cfg0.pitch : 0.32;
+    this.roll = 0; this.lastInput = -1e9; this.dragging = false;
+    var canvas = document.createElement("canvas");
+    stage.insertBefore(canvas, stage.firstChild);
+    var status = document.createElement("div"); status.className = "stage-status"; status.textContent = "Model yükleniyor…";
+    stage.appendChild(status); this.status = status;
+    try { this.renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true }); }
+    catch (e) { canvas.remove(); status.remove(); showImages(stage); return; }
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    this.scene = new THREE.Scene();
+    this.camera = new THREE.PerspectiveCamera(30, 1.6, 0.05, 50);
+    this.pivot = new THREE.Group(); this.scene.add(this.pivot);
+    this.inner = new THREE.Group(); this.pivot.add(this.inner);   /* rolls about the model's own axis when cfg.roll */
+    this.flowUni = { uTime: { value: 0 } }; this.flowOn = true; this.flowLines = null; this.parts = null;
+    this.mat = new THREE.ShaderMaterial({ vertexShader: VERT, fragmentShader: FRAG, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1 });
+    this.edgeMat = new THREE.LineBasicMaterial({ color: 0x05080C, transparent: true, opacity: 0.38 });
+    var self = this;
+    canvas.addEventListener("pointerdown", function (e) { self.dragging = true; self.lx = e.clientX; self.ly = e.clientY; canvas.setPointerCapture(e.pointerId); });
+    canvas.addEventListener("pointermove", function (e) {
+      if (!self.dragging) return;
+      self.tYaw += (e.clientX - self.lx) * 0.008; self.tPitch = Math.max(-1.2, Math.min(1.2, self.tPitch + (e.clientY - self.ly) * 0.006));
+      self.lx = e.clientX; self.ly = e.clientY; self.lastInput = performance.now();
+      if (reduce) self.render(0);
+    });
+    function end() { self.dragging = false; }
+    canvas.addEventListener("pointerup", end); canvas.addEventListener("pointercancel", end);
+    if (window.ResizeObserver) new ResizeObserver(function () { self.resize(); }).observe(stage);
+    this.resize();
+    stage.querySelectorAll("[data-switch]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        stage.querySelectorAll("[data-switch]").forEach(function (o) { o.setAttribute("aria-pressed", o === btn ? "true" : "false"); });
+        self.setModel(btn.getAttribute("data-switch"));
+      });
+    });
+    stage.querySelectorAll("[data-overlay]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        stage.querySelectorAll("[data-overlay]").forEach(function (o) { o.setAttribute("aria-pressed", o === btn ? "true" : "false"); });
+        self.overlayOff = btn.getAttribute("data-overlay") === "off";
+        if (self.overlay) self.overlay.visible = !self.overlayOff;
+        if (reduce) self.render(0);
+      });
+    });
+    stage.querySelectorAll("[data-paint]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        stage.querySelectorAll("[data-paint]").forEach(function (o) { o.setAttribute("aria-pressed", o === btn ? "true" : "false"); });
+        self.paintOff = btn.getAttribute("data-paint") === "off";
+        self.applyPaint(); if (reduce) self.render(0);
+      });
+    });
+    var sliceNote = stage.querySelector("[data-slice-note]");
+    stage.querySelectorAll("[data-slice]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        stage.querySelectorAll("[data-slice]").forEach(function (o) { o.setAttribute("aria-pressed", o === btn ? "true" : "false"); });
+        self.sliceKey = btn.getAttribute("data-slice");
+        if (sliceNote) sliceNote.textContent = self.sliceKey === "bas0" ? "Kesit: Fluent · statik basınç · 0°" : "Kesit: Fluent · Mach sayısı · 0°";
+        if (self.sliceMat) { self.sliceMat.map = self.sliceTex(self.sliceKey); self.sliceMat.needsUpdate = true; }
+        if (reduce) self.render(0);
+      });
+    });
+    var flowBtn = stage.querySelector("[data-flow]"), flowNote = stage.querySelector("[data-flow-note]");
+    if (flowBtn) flowBtn.addEventListener("click", function () {
+      self.flowOn = !self.flowOn;
+      flowBtn.setAttribute("aria-pressed", self.flowOn ? "true" : "false");
+      if (flowNote) flowNote.hidden = !self.flowOn;
+      self.applyFlow(); if (reduce) self.render(0);
+    });
+    this.setModel(stage.getAttribute("data-model"));
+  }
+  Viewer.prototype.resize = function () {
+    var w = this.stage.clientWidth, h = this.stage.clientHeight;
+    if (!w || !h || !this.renderer) return;
+    this.renderer.setSize(w, h, false); this.camera.aspect = w / h; this.fit(); if (reduce) this.render(0);
+  };
+  Viewer.prototype.fit = function () {
+    if (!this.radius) return;
+    var fov = this.camera.fov * Math.PI / 180, aspect = this.camera.aspect;
+    var hf = Math.min(fov, 2 * Math.atan(Math.tan(fov / 2) * aspect));
+    this.camera.position.set(0, 0, this.radius / Math.sin(hf / 2) * 0.92 * (this.zoom || 1));
+    this.camera.near = this.radius * 0.05; this.camera.far = this.radius * 20; this.camera.updateProjectionMatrix();
+  };
+  Viewer.prototype.setModel = function (key) {
+    var self = this; self.status.hidden = false; self.status.textContent = "Model yükleniyor…";
+    var cfg = MODELS[key];
+    Promise.all([load(key), cfg.particles ? loadField() : null, cfg.overlay ? load(cfg.overlay) : null]).then(function (res) {
+      var m = res[0];
+      self.inner.clear(); self.roll = 0; self.overlay = null;
+      if (res[2]) {
+        /* second mesh in the same coordinates (Kapsül outer shell), toggled with [data-overlay] */
+        self.overlay = new THREE.Group();
+        self.overlay.add(new THREE.Mesh(res[2].geo, self.mat), new THREE.LineSegments(res[2].edges, self.edgeMat));
+        self.overlay.visible = !self.overlayOff;
+        self.inner.add(self.overlay);
+      }
+      if (cfg.glass) {
+        self.inner.add(new THREE.Mesh(m.geo, new THREE.ShaderMaterial({ vertexShader: VERT, fragmentShader: GLASS_FRAG, transparent: true, depthWrite: false, side: THREE.DoubleSide })));
+        self.inner.add(new THREE.LineSegments(m.edges, new THREE.LineBasicMaterial({ color: 0xA9BCD0, transparent: true, opacity: 0.3 })));
+      } else {
+        self.mesh = new THREE.Mesh(m.geo, self.mat);
+        self.inner.add(self.mesh);
+        self.inner.add(new THREE.LineSegments(m.edges, self.edgeMat));
+        if (cfg.paint) {
+          self.paintMat = self.paintMat || new THREE.ShaderMaterial({ vertexShader: PAINT_VERT, fragmentShader: PAINT_FRAG, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1 });
+          self.applyPaint();
+        }
+      }
+      if (cfg.slice) {
+        /* the Fluent section on two perpendicular planes through the axis (axisymmetric case) */
+        var bb = m.geo.boundingBox;
+        var sm = self.sliceMat = new THREE.MeshBasicMaterial({ map: self.sliceTex(self.sliceKey || cfg.slice), alphaTest: 0.5, side: THREE.DoubleSide });
+        var pg = new THREE.PlaneGeometry(bb.max.x - bb.min.x, bb.max.y - bb.min.y);
+        self.inner.add(new THREE.Mesh(pg, sm));
+        var p2 = new THREE.Mesh(pg, sm); p2.rotation.x = Math.PI / 2; self.inner.add(p2);
+      }
+      self.parts = null;
+      if (cfg.particles) self.parts = new Particles(cfg.particles, res[1], m.geo.boundingBox, self.inner);
+      self.flowLines = null;
+      if (cfg.flow) {
+        if (!m.flow) m.flow = buildFlow(cfg.flow);
+        if (!self.flowMat) self.flowMat = new THREE.ShaderMaterial({ uniforms: self.flowUni, vertexShader: FLOW_VERT, fragmentShader: FLOW_FRAG, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending });
+        self.flowLines = new THREE.LineSegments(m.flow, self.flowMat);
+        self.inner.add(self.flowLines);
+      }
+      self.applyFlow();
+      self.radius = m.geo.boundingSphere.radius;
+      if (cfg.keep) [m, res[2]].forEach(function (mm) { if (mm) { var bs = mm.geo.boundingSphere; self.radius = Math.max(self.radius, bs.center.length() + bs.radius); } });
+      self.zoom = cfg.zoom; self.fit();
+      self.ready = true; self.status.hidden = true; self.render(0);
+    }).catch(function () { self.status.textContent = "Model yüklenemedi"; showImages(self.stage); });
+  };
+  /* section textures (Fluent contours), cached per viewer */
+  Viewer.prototype.sliceTex = function (key) {
+    var self = this; this.texs = this.texs || {};
+    if (!this.texs[key]) this.texs[key] = new THREE.TextureLoader().load("img/scram-" + key + ".png", function () { if (reduce) self.render(0); });
+    return this.texs[key];
+  };
+  Viewer.prototype.applyPaint = function () {
+    if (!this.mesh || !this.paintMat) return;
+    this.mesh.material = this.paintOff ? this.mat : this.paintMat;
+    this.edgeMat.opacity = this.paintOff ? 0.38 : 0.16;
+  };
+  Viewer.prototype.applyFlow = function () {
+    if (this.flowLines) this.flowLines.visible = this.flowOn;
+  };
+
+  /* tracer particles through the scramjet: speed from the decoded Fluent Mach field */
+  function Particles(n, field, bb, parent) {
+    this.n = n; this.f = field; this.half = bb.max.y; this.x0 = bb.min.x; this.len = bb.max.x - bb.min.x;
+    this.u = new Float32Array(n); this.s = new Float32Array(n); this.a = new Float32Array(n);
+    for (var i = 0; i < n; i++) { this.u[i] = Math.random(); this.reset(i); }
+    this.pos = new Float32Array(n * 3); this.m = new Float32Array(n);
+    var g = new THREE.BufferGeometry();
+    g.setAttribute("position", new THREE.BufferAttribute(this.pos, 3));
+    g.setAttribute("aM", new THREE.BufferAttribute(this.m, 1));
+    this.uni = { uScale: { value: 30 } };
+    this.points = new THREE.Points(g, new THREE.ShaderMaterial({ uniforms: this.uni, vertexShader: PART_VERT, fragmentShader: PART_FRAG, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }));
+    this.points.frustumCulled = false;
+    parent.add(this.points);
+    this.step(0);
+  }
+  Particles.prototype.reset = function (i) { this.s[i] = Math.sqrt(Math.random()); this.a[i] = Math.random() * Math.PI * 2; };
+  Particles.prototype.step = function (dt) {
+    var f = this.f;
+    for (var i = 0; i < this.n; i++) {
+      var u = this.u[i], R = f.radius(u) * 0.92, M = f.mach("mach0", u, 0.5 + 0.5 * this.s[i] * R);
+      u += dt * 0.11 * (0.15 + M / 7.4);
+      if (u > 1) { u = 0; this.reset(i); }
+      this.u[i] = u; this.m[i] = M;
+      var r = this.s[i] * f.radius(u) * 0.92 * this.half;
+      this.pos[i * 3] = this.x0 + u * this.len; this.pos[i * 3 + 1] = r * Math.cos(this.a[i]); this.pos[i * 3 + 2] = r * Math.sin(this.a[i]);
+    }
+    this.points.geometry.attributes.position.needsUpdate = true;
+    this.points.geometry.attributes.aM.needsUpdate = true;
+  };
+  Viewer.prototype.render = function (dt, now) {
+    if (!this.ready) return;
+    this.flowUni.uTime.value = reduce ? 0.6 : ((now || 0) / 1000) % 1000;
+    var idle = !reduce && !this.dragging && (performance.now() - this.lastInput) > 2500;
+    var rollCfg = MODELS[this.stage.getAttribute("data-model")].roll;
+    if (idle) { if (rollCfg) this.roll += dt * 0.3; else this.tYaw += dt * 0.35; }
+    this.yaw += (this.tYaw - this.yaw) * (reduce ? 1 : 0.1); this.pitch += (this.tPitch - this.pitch) * (reduce ? 1 : 0.1);
+    this.pivot.rotation.set(this.pitch, this.yaw, 0);
+    this.inner.rotation.x = this.roll;
+    if (this.parts) {
+      if (dt) this.parts.step(dt);
+      this.parts.uni.uScale.value = this.renderer.domElement.height * 0.026;
+    }
+    this.renderer.render(this.scene, this.camera);
+  };
+
+  var viewers = [];
+  var io = window.IntersectionObserver ? new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      var st = e.target;
+      if (e.isIntersecting && !st._viewer) { st._viewer = new Viewer(st); viewers.push(st._viewer); }
+      if (st._viewer) st._viewer.visible = e.isIntersecting;
+    });
+  }, { rootMargin: "200px 0px" }) : null;
+  document.querySelectorAll(".stage").forEach(function (st) {
+    if (io) io.observe(st); else { st._viewer = new Viewer(st); st._viewer.visible = true; viewers.push(st._viewer); }
+  });
+  if (!reduce) {
+    var last = performance.now();
+    (function tick(now) {
+      var dt = Math.min(0.05, (now - last) / 1000); last = now;
+      for (var i = 0; i < viewers.length; i++) { var v = viewers[i]; if (v.visible && v.active) v.render(dt, now); }
+      requestAnimationFrame(tick);
+    })(last);
+  }
+})();
+</script>
+
+</body>
+</html>
